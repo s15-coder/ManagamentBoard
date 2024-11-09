@@ -10,10 +10,13 @@ export default function CreateProjectForm({ onSubmit }) {
         const project = { title, description, dueDate, id: new Date().getTime(), tasks: [] };
         onSubmit(project);
     }
+    function onCancel() {
+        console.log('cancel');
+    }
     return <div className="w-full h-full">
         <form action="" className="max-w-screen-sm  m-auto" onSubmit={handleSubmit}>
             <div className="flex justify-end gap-x-5" >
-                <button className="text-lg  py-1.5 px-4 rounded-lg hover:bg-red-600 hover:text-white">Cancel</button>
+                <DangerButton type="button" onClick={onCancel}>Cancel</DangerButton>
                 <button type='submit' className="text-lg bg-black py-1.5 px-4 text-white rounded-lg hover:bg-slate-800">Save</button>
             </div>
             <div className="my-2">
@@ -31,4 +34,8 @@ export default function CreateProjectForm({ onSubmit }) {
         </form>
     </div>
 
+}
+
+function DangerButton({ children, ...props }) {
+    return <button className="text-lg  py-1.5 px-4 rounded-lg hover:bg-red-600 hover:text-white" {...props}>{children}</button>
 }

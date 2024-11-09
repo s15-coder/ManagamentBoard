@@ -1,4 +1,5 @@
 import { useState } from "react";
+import MenuIcon from './assets/menu-icon.png'
 
 import CreateProjectForm from "./components/CreateProjectForm";
 import NavBar from "./components/NavBar";
@@ -67,16 +68,19 @@ function App() {
     setProjects((prevProjects) => [...prevProjects, project]);
     setCurrentProjectId(project.id);
     setIsCreatingProject(false);
+    setIsOpen(false)
   }
 
   function createProjectHandler() {
     setCurrentProjectId(null);
     setIsCreatingProject(true);
+    setIsOpen(false)
   }
 
   function navigateToProject(projectId) {
     setCurrentProjectId(projectId);
     setIsCreatingProject(false);
+    setIsOpen(false)
   }
 
   let CurrentView = <EmptyProjects createProject={createProjectHandler} />
@@ -90,9 +94,18 @@ function App() {
       onRemoveTask={removeTask}
     />
   }
+
+  const [isOpen, setIsOpen] = useState(false)
+  const toggleDrawer = () => {
+    setIsOpen((prevState) => !prevState)
+  }
   return (
     <div className="h-screen flex flex-col">
-      <div className="h-16"></div>
+      <header className="h-16 bg-black lg:bg-transparent flex flex-col justify-center p-3">
+        <img src={MenuIcon} alt="menu"
+          onClick={toggleDrawer}
+          className="h-8 w-8 lg:h hover:cursor-pointer lg:hidden"></img>
+      </header>
       <div className="flex flex-row grow">
 
         <NavBar
@@ -100,12 +113,16 @@ function App() {
           navigateTo={navigateToProject}
           currentProjectId={currentProjectId}
           onAddProject={createProjectHandler}
+          isOpen={isOpen}
+          closeDrawer={() => {
+            setIsOpen(false)
+          }}
         />
-        <main className="w-full h-full">
+        <main className="w-full h-full p-4">
           {CurrentView}
         </main>
       </div>
-    </div>
+    </div >
 
   );
 }
