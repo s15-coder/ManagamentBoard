@@ -1,10 +1,10 @@
 import { useState } from "react";
-import MenuIcon from './assets/menu-icon.png'
 
 import CreateProjectForm from "./components/CreateProjectForm";
 import NavBar from "./components/NavBar";
 import ProjectView from "./components/ProjectView";
 import EmptyProjects from "./components/EmptyProjects";
+import Header from "./components/Header";
 
 const mockedProjects = [
   {
@@ -36,6 +36,7 @@ function App() {
   const [projects, setProjects] = useState(mockedProjects);
   const [currentProjectId, setCurrentProjectId] = useState(null);
   const [isCreatingProject, setIsCreatingProject] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   // If there is a current project, find it
   let currentProject = null;
@@ -82,32 +83,37 @@ function App() {
     setIsCreatingProject(false);
     setIsOpen(false)
   }
-
+  function onDiscardCreateProject() {
+    setIsCreatingProject(false);
+  }
+  function onDeleteProject() {
+    const projectIndex = projects.findIndex((project) => project.id === currentProjectId);
+    projects.splice(projectIndex, 1);
+    setProjects([...projects]);
+    setCurrentProjectId(null);
+  }
   let CurrentView = <EmptyProjects createProject={createProjectHandler} />
   if (isCreatingProject) {
-    CurrentView = <CreateProjectForm onSubmit={addProject} />
+    CurrentView = <CreateProjectForm
+      onSubmit={addProject}
+      onDiscard={onDiscardCreateProject} />
   }
   if (currentProjectId) {
     CurrentView = <ProjectView
       project={currentProject}
       onSaveTask={addTask}
       onRemoveTask={removeTask}
+      onDeleteProject={onDeleteProject}
     />
   }
 
-  const [isOpen, setIsOpen] = useState(false)
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState)
   }
   return (
     <div className="h-screen flex flex-col">
-      <header className="h-16 bg-black lg:bg-transparent flex flex-col justify-center p-3">
-        <img src={MenuIcon} alt="menu"
-          onClick={toggleDrawer}
-          className="h-8 w-8 lg:h hover:cursor-pointer lg:hidden"></img>
-      </header>
+      <Header toggleDrawer={toggleDrawer} />
       <div className="flex flex-row grow">
-
         <NavBar
           projects={projects}
           navigateTo={navigateToProject}

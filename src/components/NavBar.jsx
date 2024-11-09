@@ -14,7 +14,7 @@ export default function NavBar({ projects, currentProjectId, navigateTo, onAddPr
                 lg:min-w-fit
                 lg:w-auto
                 lg:translate-x-0
-                lg:bg-black
+                lg:bg-transparent
                 `+ drawerStyle
             }
         >
@@ -46,4 +46,3 @@ export default function NavBar({ projects, currentProjectId, navigateTo, onAddPr
             </div>
         </div>)
 }
-function NavBarContent() { }
