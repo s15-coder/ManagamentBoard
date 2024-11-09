@@ -53,6 +53,16 @@ function App() {
     });
   }
 
+  function removeTask(task) {
+    const projectIndex = projects.findIndex((project) => project.id === currentProjectId);
+    projects[projectIndex].tasks = projects[projectIndex].tasks.filter((t) => t !== task);
+    setProjects((prevProjects) => {
+      const newProjects = [...prevProjects];
+      newProjects[projectIndex] = projects[projectIndex];
+      return newProjects;
+    });
+  }
+
   function addProject(project) {
     setProjects((prevProjects) => [...prevProjects, project]);
     setCurrentProjectId(project.id);
@@ -60,6 +70,7 @@ function App() {
   }
 
   function createProjectHandler() {
+    setCurrentProjectId(null);
     setIsCreatingProject(true);
   }
 
@@ -76,6 +87,7 @@ function App() {
     CurrentView = <ProjectView
       project={currentProject}
       onSaveTask={addTask}
+      onRemoveTask={removeTask}
     />
   }
   return (
@@ -87,6 +99,7 @@ function App() {
           projects={projects}
           navigateTo={navigateToProject}
           currentProjectId={currentProjectId}
+          onAddProject={createProjectHandler}
         />
         <main className="w-full h-full">
           {CurrentView}

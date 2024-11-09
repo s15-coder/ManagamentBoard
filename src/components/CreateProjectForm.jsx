@@ -7,10 +7,6 @@ export default function CreateProjectForm({ onSubmit }) {
         const title = form.title.value;
         const description = form.description.value;
         const dueDate = form['due-date'].value;
-        if (title.length <= 0 || description.length <= 0 || dueDate.length <= 0) {
-            alert('All fields are required');
-            return;
-        }
         const project = { title, description, dueDate, id: new Date().getTime(), tasks: [] };
         onSubmit(project);
     }
@@ -22,15 +18,15 @@ export default function CreateProjectForm({ onSubmit }) {
             </div>
             <div className="my-2">
                 <label className="block font-medium" htmlFor="title">TITLE</label>
-                <input className={inputStyle} type="text" id="title" />
+                <input required className={inputStyle} type="text" id="title" />
             </div>
             <div>
                 <label htmlFor="description">DESCRIPTION</label>
-                <textarea className={inputStyle} name="" id="description" cols="30" rows="10"></textarea>
+                <textarea required className={inputStyle} name="" id="description" cols="30" rows="10"></textarea>
             </div>
             <div>
                 <label htmlFor="due-date">DUE DATE</label>
-                <input className={inputStyle} type="date" id="due-date" />
+                <input required className={inputStyle} type="date" id="due-date" />
             </div>
         </form>
     </div>
